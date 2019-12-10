@@ -1,0 +1,9 @@
+
+
+.fillWidth button{
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    -fx-fill-width: true;
+    -fx-background-color: orange;
+}
