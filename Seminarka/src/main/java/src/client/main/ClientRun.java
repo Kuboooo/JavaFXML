@@ -15,11 +15,7 @@ public class ClientRun {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientRun.class);
 
-    private GameLayoutController gml;
-
-    public ClientRun(GameLayoutController gml){
-        this.gml = gml;
-        System.out.println( gml + " gml z konstrukotru Client Runu");
+    public ClientRun(){
         try {
             logger.info("startin client");
             InetAddress address = InetAddress.getByName("127.0.0.1");
@@ -27,9 +23,8 @@ public class ClientRun {
             BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
             PrintWriter output = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8), true);
 
-            System.out.println(gml + " gml pri zalozeni triedy");
-            new Thread(new ThreadingClass(clientSocket, input, null, this.gml)).start();
-            new Thread(new ThreadingClass(clientSocket, null, output, this.gml)).start();
+            new Thread(new ThreadingClass(clientSocket, input, null)).start();
+            new Thread(new ThreadingClass(clientSocket, null, output)).start();
 
 
         } catch (IOException ex) {

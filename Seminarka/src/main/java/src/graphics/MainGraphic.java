@@ -31,25 +31,13 @@ import java.util.Scanner;
 
 public class MainGraphic extends Application{
 
-    private LoginController lc;
-    private GameLayoutController gml;
-    private GameLayoutController ggg;
-
-    public GameLayoutController getGml() {
-        return gml;
-    }
-
-    public void setGml(GameLayoutController gml) {
-        this.gml = gml;
-    }
 
     DataOutputStream toServer = null;
     DataInputStream fromServer = null;
     String serverMessage = "";
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        //gml = new GameLayoutController();
+    public void start(Stage primaryStage) {
 
 
         GridPane grid = new GridPane();
@@ -71,89 +59,17 @@ public class MainGraphic extends Application{
         Button btn = new Button();
         btn.setText("Enter Game");
 
+        ClientRun clientRun = new ClientRun();
 
-                //System.out.println(lc.checkLogin(userTextField.getText()));
                 Parent root;
                     try {
-
-
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameLayout.fxml"));
-
-                        this.setGml(loader.<GameLayoutController>getController());
-                        //ClientRun player = new ClientRun(gml);
-                        System.out.println(loader.getController() + " skusam ci to ide");
                         root = loader.load();
                         loader.setRoot(root);
                         btn.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
 
-                                try {
-                                    // Create a socket to connect to the server
-                                    Socket socket = new Socket("localhost", 8000);
-                                    // Socket socket = new Socket("130.254.204.36", 8000);
-                                    // Socket socket = new Socket("drake.Armstrong.edu", 8000);
-
-                                     ggg = loader.getController();
-                                  //  ggg.setPlayerSocket(socket);
-                                    ClientRun clientRun = new ClientRun(ggg);
-
-                                    /*
-                                    // Create an input stream to receive data from the server
-                                    fromServer = new DataInputStream(socket.getInputStream());
-
-                                    // Create an output stream to send data to the server
-                                    toServer = new DataOutputStream(socket.getOutputStream());
-
-
-                                    new Thread(() -> {
-                                        try {
-                                            while (true) {
-
-                                                Platform.runLater(() -> {
-
-                                                    try {
-                                                        System.out.println(" this is your  " + gml);
-                                                        System.out.println(" this is your  " + loader);
-
-                                                        GameLayoutController ggg = loader.getController();
-                                                        System.out.println(socket + "player socket");
-                                                        System.out.println(" thsi is ggg " + ggg);
-                                                        toServer.writeUTF("wake up");
-                                                        ggg.setPlayerSocket(socket);
-                                                        toServer.writeUTF("wake up");
-                                                    } catch (IOException e) {
-                                                        e.printStackTrace();
-                                                    }
-
-                                                });
-                                                serverMessage = fromServer.readUTF();
-
-                                                System.out.println("message received");
-
-                                                Platform.runLater(() -> {
-
-                                                    gml.appendMessage(serverMessage);
-
-                                                });
-
-
-                                            }
-                                        } catch (IOException e) {
-                                            System.out.println(" ta.appendText(e.toString() ");
-                                        }
-
-                                    }).start(); */
-                                } catch (IOException ex) {
-                                    System.out.println(" ta.appendText(e.toString() ");
-                                }
-
-
-                                System.out.println(loader.getController() + " controolllerrr");
-                        /*
-                        FXMLLoader loader = new FXMLLoader((getClass().getResource("Login.fxml")));
-                        root = loader.load();*/
-                                //root = FXMLLoader.load(getClass().getClassLoader().getResource("Login.fxml"));
 
                                 Stage stage = new Stage();
                                 stage.setTitle("My New Stage Title");
@@ -162,7 +78,8 @@ public class MainGraphic extends Application{
                                 // Hide this current window
                                 ((Node) (event.getSource())).getScene().getWindow().hide();
                             }
-                        });
+                        }
+                        );
                     }catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -1,7 +1,10 @@
 package src.client.main;
 
 import javafx.fxml.FXMLLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import src.client.main.controller.GameLayoutController;
+import src.server.main.ServerRun;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,51 +14,41 @@ import java.util.Scanner;
 
 public class ThreadingClass implements Runnable {
 
-    private GameLayoutController gml;
-
-    public void setGml(GameLayoutController gml) {
-        this.gml = gml;
-    }
+    private static final Logger logger = LoggerFactory.getLogger(ServerRun.class);
 
     Socket clientSocket;
     BufferedReader input;
     PrintWriter output;
     String outputMessage = "";
     String inputMessage = "";
-    boolean hasName = false;
 
-    public ThreadingClass(Socket clientSocket, BufferedReader input, PrintWriter output, GameLayoutController gml) {
-        this.gml = gml;
+    public ThreadingClass(Socket clientSocket, BufferedReader input, PrintWriter output) {
         this.clientSocket = clientSocket;
         this.input = input;
         this.output = output;
-        System.out.println(gml + " gml  z konstruktora");
-        gml.gotMessage("Ja viem ze to nejde tho");
     }
 
     @Override
     public void run() {
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("GameLayout.fxml"));
-        //GameLayoutController gml = loader.<GameLayoutController>getController();
-        //gml = new GameLayoutController();
         if (output!= null){
             Scanner scanner = new Scanner(System.in);
             while (scanner.hasNext()) {
+                logger.info("Ready to send message");
                 outputMessage = scanner.nextLine();
                 output.println(outputMessage);
+                logger.info(outputMessage + " message sent");
             }
         }else {
             while (true) {
                 try {
+                    logger.info("Awaiting message");
                     inputMessage =
                             input.readLine();
+                    logger.info("Received message: " + inputMessage);
+
                     if (inputMessage.equals("bye")) {
                         break;
                     }
-                    System.out.println(inputMessage);
-                    System.out.println(gml + " toto ej gml ");
-                    gml.appendMessage(inputMessage);
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
