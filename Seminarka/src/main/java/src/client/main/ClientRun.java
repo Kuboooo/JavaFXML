@@ -15,22 +15,48 @@ public class ClientRun {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientRun.class);
 
+    private Socket playerSocket;
+
+    private GameLayoutController glc;
+
+    private ThreadingClass tc;
+
     public ClientRun(){
         try {
             logger.info("startin client");
             InetAddress address = InetAddress.getByName("127.0.0.1");
-            Socket clientSocket = new Socket(address, 8000);
-            BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
-            PrintWriter output = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8), true);
+            playerSocket = new Socket(address, 8000);
+            BufferedReader input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream(), StandardCharsets.UTF_8));
 
-            new Thread(new ThreadingClass(clientSocket, input, null)).start();
-            new Thread(new ThreadingClass(clientSocket, null, output)).start();
+            //new Thread(new ThreadingClass(playerSocket, input, glc)).start();
+
+            tc = new ThreadingClass(playerSocket, input);
+
+            Thread t = new Thread(tc);
+            t.start();
 
 
         } catch (IOException ex) {
             System.out.println(ex);
         }
 
+    }
+
+    public Socket getPlayerSocket() {
+        return playerSocket;
+    }
+
+    public GameLayoutController getGlc() {
+        return glc;
+    }
+
+    public void setGlc(GameLayoutController glc) {
+        this.glc = glc;
+        tc.setGlc(glc);
+    }
+
+    public void setPlayerSocket(Socket playerSocket) {
+        this.playerSocket = playerSocket;
     }
 }
 

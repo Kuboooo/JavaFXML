@@ -18,33 +18,34 @@ public class ThreadingClass implements Runnable {
 
     Socket clientSocket;
     BufferedReader input;
-    PrintWriter output;
-    String outputMessage = "";
     String inputMessage = "";
+    private GameLayoutController glc;
 
-    public ThreadingClass(Socket clientSocket, BufferedReader input, PrintWriter output) {
+    public ThreadingClass(Socket clientSocket, BufferedReader input) {
         this.clientSocket = clientSocket;
         this.input = input;
-        this.output = output;
     }
 
     @Override
     public void run() {
-        if (output!= null){
-            Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNext()) {
-                logger.info("Ready to send message");
-                outputMessage = scanner.nextLine();
-                output.println(outputMessage);
-                logger.info(outputMessage + " message sent");
-            }
-        }else {
+
             while (true) {
                 try {
                     logger.info("Awaiting message");
                     inputMessage =
                             input.readLine();
+
                     logger.info("Received message: " + inputMessage);
+                    logger.info("GLC UPDATED : " + glc + inputMessage);
+
+                        if (startsWith1(inputMessage)) {
+                            logger.info("this is a command " + inputMessage);
+                            inputMessage = trimMessage(inputMessage);
+                            logger.info("this is a command " + inputMessage);
+                            glc.appendMessage(inputMessage);
+                        }
+
+                        glc.processCommand(inputMessage);
 
                     if (inputMessage.equals("bye")) {
                         break;
@@ -54,6 +55,21 @@ public class ThreadingClass implements Runnable {
                 }
             }
         }
+
+    public GameLayoutController getGlc() {
+        return glc;
+    }
+
+    public void setGlc(GameLayoutController glc) {
+        this.glc = glc;
+    }
+
+    private boolean startsWith1(String s){
+        return s.substring(0, 1).equals("1");
+    }
+
+    private String trimMessage(String s){
+        return s.substring(1);
     }
 
 }
