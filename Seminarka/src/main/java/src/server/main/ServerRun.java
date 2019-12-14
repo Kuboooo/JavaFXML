@@ -10,10 +10,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import static src.client.main.util.Commands.SET_NAME;
+
 public class ServerRun {
 
     private static final Logger logger = LoggerFactory.getLogger(ServerRun.class);
-    private static List<Player> connectionList;
+    private static  List<Player> connectionList;
 
 
     public static void main(String[] args) {
@@ -47,6 +49,7 @@ public class ServerRun {
                     thread.start();
                     game.setPlayerX(p2);
                     logger.info("Player X in, game can begin");
+                    connectionList.add(p2);
                 }
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,8 +86,14 @@ public class ServerRun {
                         if (validName(messageToBeSent)) {
                             logger.info("meno validne");
                             playerName = messageToBeSent;
+                           if (game.getPlayerO().getSocket().equals(playerSocket)){
+                               game.getPlayerO().setPlayerName(messageToBeSent);
+                            }else {
+                               game.getPlayerX().setPlayerName(messageToBeSent);
+                           }
+                           output.println(SET_NAME + "ok");
 
-                            output.println(playerName);
+
                         }else{
                             logger.info("name already taken " + messageToBeSent);
                             output.println("Name already taken");
@@ -110,7 +119,15 @@ public class ServerRun {
             return playerSocket;
         }
 
-        private boolean validName(String s) {
+        private synchronized boolean validName(String s) {
+            for (Player p : connectionList) {
+                if (p.getPlayerName() != null) {
+                    logger.info("player name " + playerName);
+                } else {
+                    logger.info("player name null");
+                }
+            }
+            logger.info(" this is in a collection " + connectionList.stream().filter(e -> e.getPlayerName() != null).noneMatch(e -> e.getPlayerName().equals(s)));
             return connectionList.stream().filter(e -> e.getPlayerName() != null).noneMatch(e -> e.getPlayerName().equals(s));
         }
     }

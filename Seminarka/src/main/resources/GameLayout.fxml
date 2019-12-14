@@ -3,12 +3,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<?import javafx.scene.control.TextField?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheets/ButtonStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.client.main.controller.GameLayoutController">
    <children>
       <GridPane alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheets/ButtonStyle.css">
@@ -33,18 +33,19 @@
         </rowConstraints>
          <children>
             <Label fx:id="playerName" prefHeight="17.0" prefWidth="91.0" text="Player:" />
-            <Button mnemonicParsing="false" text="Chat" GridPane.columnIndex="5" GridPane.rowIndex="7" fx:id="sendMessageChat" onAction="#posliMasage"/>
-            <TextArea editable="false" prefHeight="105.0" prefWidth="375.0" GridPane.columnSpan="5" GridPane.rowIndex="5" GridPane.rowSpan="2" fx:id="textArea" />
-            <Button fx:id="button1" onAction="#button1Pressed" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="96.0" prefWidth="145.0" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button fx:id="button2" onAction="#button2Pressed" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="132.0" prefWidth="169.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Button fx:id="button3" onAction="#button3Pressed" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="162.0" prefWidth="265.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-            <Button fx:id="button4" onAction="#button4Pressed" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="127.0" prefWidth="176.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Button fx:id="button5" onAction="#button5Pressed" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="139.0" prefWidth="173.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <Button fx:id="button6" onAction="#button6Pressed" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="109.0" prefWidth="155.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-            <Button fx:id="button7" onAction="#button7Pressed" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="44.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Button fx:id="button8" onAction="#button8Pressed" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="105.0" prefWidth="157.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <Button fx:id="button9" onAction="#button9Pressed" contentDisplay="CENTER" minWidth="79.0" mnemonicParsing="false" prefHeight="99.0" prefWidth="156.0" GridPane.columnIndex="4" GridPane.rowIndex="3"  />
-            <TextField prefHeight="200.0" prefWidth="200.0" promptText="Chat with your opponent" GridPane.columnSpan="5" GridPane.rowIndex="7" fx:id="textFieldMessage" />
+            <Button fx:id="sendMessageChat" mnemonicParsing="false" onAction="#posliMasage" text="Chat" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+            <TextArea fx:id="textArea" editable="false" prefHeight="105.0" prefWidth="375.0" GridPane.columnSpan="5" GridPane.rowIndex="5" GridPane.rowSpan="2" />
+            <Button fx:id="button1" contentDisplay="CENTER" mnemonicParsing="false" onAction="#button1Pressed" prefHeight="96.0" prefWidth="145.0" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="button2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#button2Pressed" prefHeight="132.0" prefWidth="169.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="button3" contentDisplay="CENTER" mnemonicParsing="false" onAction="#button3Pressed" prefHeight="162.0" prefWidth="265.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Button fx:id="button4" contentDisplay="CENTER" mnemonicParsing="false" onAction="#button4Pressed" prefHeight="127.0" prefWidth="176.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="button5" contentDisplay="CENTER" mnemonicParsing="false" onAction="#button5Pressed" prefHeight="139.0" prefWidth="173.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Button fx:id="button6" contentDisplay="CENTER" mnemonicParsing="false" onAction="#button6Pressed" prefHeight="109.0" prefWidth="155.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Button fx:id="button7" contentDisplay="CENTER" mnemonicParsing="false" onAction="#button7Pressed" prefHeight="44.0" prefWidth="88.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Button fx:id="button8" contentDisplay="CENTER" mnemonicParsing="false" onAction="#button8Pressed" prefHeight="105.0" prefWidth="157.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Button fx:id="button9" contentDisplay="CENTER" minWidth="79.0" mnemonicParsing="false" onAction="#button9Pressed" prefHeight="99.0" prefWidth="156.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <TextField fx:id="textFieldMessage" prefHeight="200.0" prefWidth="200.0" promptText="Chat with your opponent" GridPane.columnSpan="5" GridPane.rowIndex="7" />
+            <Button fx:id="findOpponent" mnemonicParsing="false" onAction="#findOpponent" prefHeight="111.0" prefWidth="86.0" text="Start" GridPane.columnIndex="3" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </children>

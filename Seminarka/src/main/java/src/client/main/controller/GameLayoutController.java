@@ -1,23 +1,24 @@
 package src.client.main.controller;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import src.client.main.ThreadingClass;
-import src.server.main.ServerRun;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 public class GameLayoutController implements Initializable{
@@ -57,6 +58,9 @@ public class GameLayoutController implements Initializable{
     private Button button9;
 
     @FXML
+    private Button findOpponent;
+
+    @FXML
     private TextArea textArea;
 
     @FXML
@@ -79,6 +83,89 @@ public class GameLayoutController implements Initializable{
     public void posliMasage(){
         output.println("1" + textFieldMessage.getText());
         textFieldMessage.clear();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        textArea.setVisible(false);
+        textFieldMessage.setVisible(false);
+        sendMessageChat.setVisible(false);
+        button1.setMouseTransparent(true);
+        button2.setMouseTransparent(true);
+        button3.setMouseTransparent(true);
+        button4.setMouseTransparent(true);
+        button5.setMouseTransparent(true);
+        button6.setMouseTransparent(true);
+        button7.setMouseTransparent(true);
+        button8.setMouseTransparent(true);
+        button9.setMouseTransparent(true);
+    }
+
+    @FXML
+    public void findOpponent(ActionEvent event){
+
+        loadUpLFOLayout(event);
+    }
+
+    private void loadUpLFOLayout(ActionEvent event){
+
+        Parent root;
+        try {
+
+           // Stage oldStage = (Stage) findOpponent.getScene().getWindow();
+          //  oldStage.initModality(Modality.APPLICATION_MODAL);
+            root = FXMLLoader.load(getClass().getResource("/LookingForOpponent.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Lookign 4 opponent title");
+            stage.setScene(new Scene(root, 250, 150));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+            // Hide this current window (if this is what you want)
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void processCommand(String command){
+        switch (command){
+            case "f1":
+                button1.setMouseTransparent(true);
+                break;
+            case "f2":
+                button2.setMouseTransparent(true);
+                break;
+            case "f3":
+                button3.setMouseTransparent(true);
+                break;
+            case "f4":
+                button4.setMouseTransparent(true);
+                break;
+            case "f5":
+                button5.setMouseTransparent(true);
+                break;
+            case "f6":
+                button6.setMouseTransparent(true);
+                break;
+            case "f7":
+                button7.setMouseTransparent(true);
+                break;
+            case "f8":
+                button8.setMouseTransparent(true);
+                break;
+            case "f9":
+                button9.setMouseTransparent(true);
+                break;
+            case "X":
+                playerName.setText("Player: X");
+                break;
+            case "O":
+                playerName.setText("Player: O");
+                break;
+                default:
+                    logger.info("random default");
+        }
     }
 
     @FXML
@@ -135,61 +222,4 @@ public class GameLayoutController implements Initializable{
         button9.setMouseTransparent(true);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        textArea.setText("First text");
-    }
-
-    public Socket getPlayerSocket() {
-        return playerSocket;
-    }
-
-    public void setPlayerSocket(Socket playerSocket) {
-        this.playerSocket = playerSocket;
-        try {
-            output = new PrintWriter(new OutputStreamWriter(playerSocket.getOutputStream(), StandardCharsets.UTF_8), true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void processCommand(String command){
-        switch (command){
-            case "f1":
-                button1.setMouseTransparent(true);
-                break;
-            case "f2":
-                button2.setMouseTransparent(true);
-                break;
-            case "f3":
-                button3.setMouseTransparent(true);
-                break;
-            case "f4":
-                button4.setMouseTransparent(true);
-                break;
-            case "f5":
-                button5.setMouseTransparent(true);
-                break;
-            case "f6":
-                button6.setMouseTransparent(true);
-                break;
-            case "f7":
-                button7.setMouseTransparent(true);
-                break;
-            case "f8":
-                button8.setMouseTransparent(true);
-                break;
-            case "f9":
-                button9.setMouseTransparent(true);
-                break;
-            case "X":
-                playerName.setText("Player: X");
-                break;
-            case "O":
-                playerName.setText("Player: O");
-                break;
-                default:
-                    logger.info("random default");
-        }
-    }
 }
