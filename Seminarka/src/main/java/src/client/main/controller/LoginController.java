@@ -1,5 +1,6 @@
 package src.client.main.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import src.client.main.controllerInterface.ControllerInterface;
+import src.client.main.util.CommandReceiver;
 import src.client.main.util.CommanderSender;
 import src.client.main.util.Commands;
 import src.client.main.util.UsernameChecker;
@@ -22,7 +25,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
+public class LoginController implements Initializable, ControllerInterface {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
@@ -58,16 +61,26 @@ public class LoginController implements Initializable {
     }
 
     public void loadUpGameLayout(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                // Update UI here.
+
 
         try {
-            Parent loaderParent = FXMLLoader.load(getClass().getResource("/GameLayout.fxml"));
-            Scene gameLaoutScene = new Scene(loaderParent);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameLayout.fxml"));
+            CommandReceiver.setCurrentControler(loader.getController());
+
+            Parent loaderParent = loader.load();
+            Scene gameLayoutScene = new Scene(loaderParent);
 
             Stage window = (Stage) loginButton.getScene().getWindow();
-            window.setScene(gameLaoutScene);
+            window.setScene(gameLayoutScene);
             window.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
+            }
+        });
     }
 }

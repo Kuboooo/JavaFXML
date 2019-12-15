@@ -14,6 +14,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import src.client.main.controllerInterface.ControllerInterface;
+import src.client.main.util.CommandReceiver;
+import src.client.main.util.CommanderSender;
+import src.client.main.util.Commands;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +25,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameLayoutController implements Initializable{
+public class GameLayoutController implements Initializable, ControllerInterface {
 
     private static final Logger logger = LoggerFactory.getLogger(GameLayoutController.class);
 
@@ -75,36 +79,66 @@ public class GameLayoutController implements Initializable{
 
 
     public void appendMessage(String message){
-        System.out.println("Text area = " + textArea);
         textArea.appendText("\n"+message);
     }
 
     @FXML
     public void posliMasage(){
-        output.println("1" + textFieldMessage.getText());
+        CommanderSender.getInstance().process(Commands.CHAT, textFieldMessage.getText());
         textFieldMessage.clear();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        textArea.setVisible(false);
-        textFieldMessage.setVisible(false);
-        sendMessageChat.setVisible(false);
-        button1.setMouseTransparent(true);
-        button2.setMouseTransparent(true);
-        button3.setMouseTransparent(true);
-        button4.setMouseTransparent(true);
-        button5.setMouseTransparent(true);
-        button6.setMouseTransparent(true);
-        button7.setMouseTransparent(true);
-        button8.setMouseTransparent(true);
-        button9.setMouseTransparent(true);
+        if (textArea.isVisible()) {
+            textArea.setVisible(false);
+            textFieldMessage.setVisible(false);
+            sendMessageChat.setVisible(false);
+            button1.setMouseTransparent(true);
+            button2.setMouseTransparent(true);
+            button3.setMouseTransparent(true);
+            button4.setMouseTransparent(true);
+            button5.setMouseTransparent(true);
+            button6.setMouseTransparent(true);
+            button7.setMouseTransparent(true);
+            button8.setMouseTransparent(true);
+            button9.setMouseTransparent(true);
+        }else {
+            textArea.setVisible(true);
+            textFieldMessage.setVisible(true);
+            sendMessageChat.setVisible(true);
+            button1.setMouseTransparent(false);
+            button2.setMouseTransparent(false);
+            button3.setMouseTransparent(false);
+            button4.setMouseTransparent(false);
+            button5.setMouseTransparent(false);
+            button6.setMouseTransparent(false);
+            button7.setMouseTransparent(false);
+            button8.setMouseTransparent(false);
+            button9.setMouseTransparent(false);
+        }
+    }
+
+    public void setUpForPlay(){
+        textArea.setVisible(true);
+        textFieldMessage.setVisible(true);
+        sendMessageChat.setVisible(true);
+        button1.setMouseTransparent(false);
+        button2.setMouseTransparent(false);
+        button3.setMouseTransparent(false);
+        button4.setMouseTransparent(false);
+        button5.setMouseTransparent(false);
+        button6.setMouseTransparent(false);
+        button7.setMouseTransparent(false);
+        button8.setMouseTransparent(false);
+        button9.setMouseTransparent(false);
     }
 
     @FXML
     public void findOpponent(ActionEvent event){
 
         loadUpLFOLayout(event);
+        logger.info("we done in this window tho");
     }
 
     private void loadUpLFOLayout(ActionEvent event){
@@ -114,14 +148,17 @@ public class GameLayoutController implements Initializable{
 
            // Stage oldStage = (Stage) findOpponent.getScene().getWindow();
           //  oldStage.initModality(Modality.APPLICATION_MODAL);
-            root = FXMLLoader.load(getClass().getResource("/LookingForOpponent.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/LookingForOpponent.fxml"));
+
+            root = loader.load();
+
+            CommandReceiver.setCurrentControler(loader.getController());
+
             Stage stage = new Stage();
             stage.setTitle("Lookign 4 opponent title");
             stage.setScene(new Scene(root, 250, 150));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
-            // Hide this current window (if this is what you want)
-
         }
         catch (IOException e) {
             e.printStackTrace();

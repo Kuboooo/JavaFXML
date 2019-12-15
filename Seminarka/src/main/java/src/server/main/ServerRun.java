@@ -106,7 +106,7 @@ public class ServerRun {
                         logger.info("Player " + token + " sent " + messageToBeSent);
 
                         //TODO: poriesit ked sa jeden logne a druhy este nie
-                        output = new PrintWriter(new OutputStreamWriter(game.getOpponentSocket(playerSocket).getOutputStream(), StandardCharsets.UTF_8), true);
+                        output = new PrintWriter(new OutputStreamWriter(playerSocket.getOutputStream(), StandardCharsets.UTF_8), true);
                         output.println(messageToBeSent);
                         logger.info("sent message " + messageToBeSent);
                     }

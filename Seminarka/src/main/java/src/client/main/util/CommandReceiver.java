@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import src.client.main.controller.GameLayoutController;
 import src.client.main.controller.LoginController;
 import src.client.main.controller.LookingForOpponentController;
+import src.client.main.controllerInterface.ControllerInterface;
 
 
 public class CommandReceiver {
@@ -13,6 +14,15 @@ public class CommandReceiver {
 
     private static final Logger logger = LoggerFactory.getLogger(CommandReceiver.class);
 
+    private static ControllerInterface currentControler;
+
+    public static ControllerInterface getCurrentControler() {
+        return currentControler;
+    }
+
+    public static void setCurrentControler(ControllerInterface currentControler) {
+        CommandReceiver.currentControler = currentControler;
+    }
 
     private CommandReceiver (){}
 
@@ -25,21 +35,32 @@ public class CommandReceiver {
 
         Commands commands = findCommand(message);
         logger.info("command received " + commands);
-        message = cutCommand(message, commands);
+
         logger.info("cut message into " + message);
         switch (commands){
-            case PLAY:
+            case CANCEL:
+                logger.debug("gmlc is: " + getCurrentControler());
+                GameLayoutController gmlc = ((GameLayoutController) getCurrentControler());
+                logger.debug("gmlc is: " + gmlc);
+
+                gmlc.setUpForPlay();
+            case FIND_OPPONENT:
                 break;
             case SET_NAME:
+                message = cutCommand(message, commands);
                 if (message.equals("ok")) {
-                    logger.debug("getLC is: " + getLc());
-                    getLc().loadUpGameLayout();
+                    logger.debug("getLC is: " + getCurrentControler());
+                    LoginController loginController = ((LoginController) getCurrentControler());
+                    logger.debug("getLC is: " + loginController);
+                    loginController.loadUpGameLayout();
                 }else {
                     getLc().errorLogin();
                 }
                 break;
             case CHAT:
-                getGlc().appendMessage(message);
+                message = cutCommand(message, commands);
+                GameLayoutController gameLayoutController = ((GameLayoutController) getCurrentControler());
+                gameLayoutController.appendMessage(message);
                 break;
             default:
                 System.out.println("unknown command");
@@ -64,17 +85,12 @@ public class CommandReceiver {
         return combo.substring(commands.getCommand().length());
     }
 
-    public static CommandReceiver getInstance(GameLayoutController glc, LoginController lc, LookingForOpponentController lfoc){
+    public static CommandReceiver getInstance(){
         if (commandReceiver == null) {
             commandReceiver = new CommandReceiver();
-            commandReceiver.setGlc(glc);
-            commandReceiver.setLc(lc);
-            commandReceiver.setLfoc(lfoc);
-            System.out.println(glc);
         }
         return commandReceiver;
     }
-
 
     public void setGlc(GameLayoutController glc) {
         this.glc = glc;

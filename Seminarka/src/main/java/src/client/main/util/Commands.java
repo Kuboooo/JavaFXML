@@ -4,9 +4,10 @@ public enum Commands {
 
     QUIT("quit"),
     LOGIN("login"),
-    PLAY("play"),
+    FIND_OPPONENT("find_opponent"),
     SET_NAME("set_name"),
     CHAT("chat"),
+    MOVE("move"),
     CANCEL("cancel");
 
     private final String command;

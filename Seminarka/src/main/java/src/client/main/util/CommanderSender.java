@@ -9,8 +9,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
+import static src.client.main.util.Commands.CANCEL;
 import static src.client.main.util.Commands.CHAT;
-import static src.client.main.util.Commands.PLAY;
+import static src.client.main.util.Commands.FIND_OPPONENT;
 import static src.client.main.util.Commands.SET_NAME;
 
 
@@ -41,8 +42,8 @@ public class CommanderSender {
         logger.info("also got message: " + value);
 
         switch (command) {
-            case PLAY:
-                output.println(PLAY);
+            case FIND_OPPONENT:
+                output.println(FIND_OPPONENT);
                 break;
             case CHAT:
                 output.println(CHAT + value);
@@ -50,6 +51,9 @@ public class CommanderSender {
             case SET_NAME:
                 output.println(SET_NAME + value);
                 logger.info("Sending server cmmand SET_NAME");
+                break;
+            case CANCEL:
+                output.println(CANCEL);
                 break;
             default:
                 System.out.println("unknown command");

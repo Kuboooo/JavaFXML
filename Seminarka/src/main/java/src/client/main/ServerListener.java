@@ -18,7 +18,7 @@ public class ServerListener implements Runnable {
 
     @Override
     public void run() {
-        CommandReceiver commandReceiver = CommandReceiver.getInstance(null, null, null);
+        CommandReceiver commandReceiver = CommandReceiver.getInstance();
 
         try {
             input = new BufferedReader(new InputStreamReader(ConnectClient.getInstance().getPlayerSocket().getInputStream(), StandardCharsets.UTF_8));
