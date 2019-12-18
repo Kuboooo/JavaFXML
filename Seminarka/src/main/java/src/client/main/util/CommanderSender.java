@@ -59,4 +59,12 @@ public class CommanderSender {
                 System.out.println("unknown command");
         }
     }
+
+    public void process(Commands command, int value) {
+        logger.info("got command here: " + command);
+        logger.info("also got message: " + value);
+        output.println(command + "" + value);
+
+
+    }
 }

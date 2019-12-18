@@ -15,120 +15,35 @@ import static src.client.main.util.Commands.SET_NAME;
 public class ServerRun {
 
     private static final Logger logger = LoggerFactory.getLogger(ServerRun.class);
-    private static  List<Player> connectionList;
+    private static  List<String> connectionList;
 
 
     public static void main(String[] args) {
         logger.info("runnin main");
 
-        StartingThread startingThread;
+        ServerCommandProcessor.StartingThread startingThread;
         Thread thread;
         connectionList = new ArrayList<>();
+        List<Game> gameList = new ArrayList<>();
+        GameList.setGameList(gameList);
 
         try {
             ServerSocket serverSocket = new ServerSocket(8000);
                 while (true) {
-                    Game game = new Game();
-
-                    startingThread = new StartingThread(game, serverSocket.accept(), "O");
+                    startingThread = new ServerCommandProcessor.StartingThread(serverSocket.accept());
                     thread = new Thread(startingThread);
                     thread.start();
-
-                    Player p1 = new Player(startingThread.getSocket());
-
-                    game.setPlayerO(p1);
-                    logger.info("First player O in");
-                    connectionList.add(p1);
-
-
-                    startingThread = new StartingThread(game, serverSocket.accept(), "X");
-
-                    Player p2 = new Player(startingThread.getSocket());
-
-                    thread = new Thread(startingThread);
-                    thread.start();
-                    game.setPlayerX(p2);
-                    logger.info("Player X in, game can begin");
-                    connectionList.add(p2);
                 }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public static class StartingThread implements Runnable{
 
-        public Socket playerSocket;
-        private String token;
-        private String playerName;
-        private Game game;
-
-        String messageToBeSent;
-
-
-        public StartingThread(Game game,Socket socket, String token){
-            this.game = game;
-            this.playerSocket = socket;
-            this.token = token;
-        }
-
-        @Override
-        public void run() {
-                PrintWriter output = null;
-            BufferedReader input = null;
-                try {
-                    input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream(), StandardCharsets.UTF_8));
-
-                    while (playerName == null) {
-                        logger.info("server caka msg");
-                        messageToBeSent = input.readLine();
-                        output = new PrintWriter(new OutputStreamWriter(playerSocket.getOutputStream(), StandardCharsets.UTF_8), true);
-                        logger.info("server dostal jmeno " + messageToBeSent);
-                        if (validName(messageToBeSent)) {
-                            logger.info("meno validne");
-                            playerName = messageToBeSent;
-                           if (game.getPlayerO().getSocket().equals(playerSocket)){
-                               game.getPlayerO().setPlayerName(messageToBeSent);
-                            }else {
-                               game.getPlayerX().setPlayerName(messageToBeSent);
-                           }
-                           output.println(SET_NAME + "ok");
-
-
-                        }else{
-                            logger.info("name already taken " + messageToBeSent);
-                            output.println("Name already taken");
-                        }
-                    }
-
-                    while (true) {
-                        logger.info("cakam na spravu");
-                        messageToBeSent = input.readLine();
-                        logger.info("Player " + token + " sent " + messageToBeSent);
-
-                        //TODO: poriesit ked sa jeden logne a druhy este nie
-                        output = new PrintWriter(new OutputStreamWriter(playerSocket.getOutputStream(), StandardCharsets.UTF_8), true);
-                        output.println(messageToBeSent);
-                        logger.info("sent message " + messageToBeSent);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
-
-        private Socket getSocket() {
-            return playerSocket;
-        }
-
-        private synchronized boolean validName(String s) {
-            for (Player p : connectionList) {
-                if (p.getPlayerName() != null) {
-                    logger.info("player name " + playerName);
-                } else {
-                    logger.info("player name null");
-                }
-            }
-            logger.info(" this is in a collection " + connectionList.stream().filter(e -> e.getPlayerName() != null).noneMatch(e -> e.getPlayerName().equals(s)));
-            return connectionList.stream().filter(e -> e.getPlayerName() != null).noneMatch(e -> e.getPlayerName().equals(s));
-        }
+    public static List<String> getConnectionList() {
+        return connectionList;
     }
+
+    //public static void setConnectionList(List<Player> connectionList) {
+        //ServerRun.connectionList = connectionList;
+    //}
 }

@@ -5,9 +5,15 @@
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+
+<?import javafx.scene.layout.GridPane?>
 <AnchorPane prefHeight="150.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="src.client.main.controller.LookingForOpponentController">
+
    <children>
       <Button fx:id="cancelSearching" layoutX="99.0" layoutY="63.0" mnemonicParsing="false" onAction="#cancelSearching" text="Cancel" />
       <ProgressBar fx:id="progressBar" layoutX="25.0" layoutY="27.0" prefWidth="200.0" progress="0.0" />
    </children>
+
 </AnchorPane>

@@ -55,9 +55,13 @@ public class LoginController implements Initializable, ControllerInterface {
     }
 
     public void errorLogin(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
         errorLabel.setVisible(true);
         errorLabel.setTextFill(Color.web("#f56c42"));
         errorLabel.setText("Username taken");
+            }});
     }
 
     public void loadUpGameLayout(){
@@ -69,9 +73,9 @@ public class LoginController implements Initializable, ControllerInterface {
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameLayout.fxml"));
-            CommandReceiver.setCurrentControler(loader.getController());
 
             Parent loaderParent = loader.load();
+            CommandReceiver.setCurrentControler(loader.getController());
             Scene gameLayoutScene = new Scene(loaderParent);
 
             Stage window = (Stage) loginButton.getScene().getWindow();

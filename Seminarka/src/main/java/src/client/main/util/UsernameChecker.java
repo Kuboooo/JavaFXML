@@ -28,7 +28,7 @@ public class UsernameChecker {
             output.println(Commands.SET_NAME + username);
             BufferedReader input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream(), StandardCharsets.UTF_8));
             String response = input.readLine();
-            if (response.equals("ok")){
+            if (response.startsWith("ok")){
                 logger.info("username Ok");
                 new Thread(new ServerListener()).start();
                 return true;

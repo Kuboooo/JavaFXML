@@ -1,17 +1,20 @@
 package src.client.main.util;
 
 
+import javafx.application.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import src.client.game.Game;
+import src.client.game.Player;
 import src.client.main.controller.GameLayoutController;
 import src.client.main.controller.LoginController;
 import src.client.main.controller.LookingForOpponentController;
 import src.client.main.controllerInterface.ControllerInterface;
 
+import java.io.IOException;
+
 
 public class CommandReceiver {
-
-
     private static final Logger logger = LoggerFactory.getLogger(CommandReceiver.class);
 
     private static ControllerInterface currentControler;
@@ -30,6 +33,7 @@ public class CommandReceiver {
     private GameLayoutController glc;
     private LoginController lc;
     private LookingForOpponentController lfoc;
+    private Game game;
 
     public void process(String message){
 
@@ -39,29 +43,71 @@ public class CommandReceiver {
         logger.info("cut message into " + message);
         switch (commands){
             case CANCEL:
-                logger.debug("gmlc is: " + getCurrentControler());
-                GameLayoutController gmlc = ((GameLayoutController) getCurrentControler());
-                logger.debug("gmlc is: " + gmlc);
+                logger.debug("glc is: " + getCurrentControler());
+                glc = ((GameLayoutController) getCurrentControler());
+                logger.debug("gmlc is: " + glc);
 
-                gmlc.setUpForPlay();
+                //glc.setUpForPlay();
+                break;
             case FIND_OPPONENT:
+                message = cutCommand(message, commands);
+                logger.debug("Opponent found ");
+                glc = ((GameLayoutController) getCurrentControler());
+                logger.debug("gmlc is: " + glc);
+                glc.setUpForPlay();
+                logger.debug("gmlc is: " + glc);
+                Game.getCurrentPlayer().setToken(message.charAt(0));
+                if (Game.getCurrentPlayer().getToken() == 'X'){
+                    Game.setIsMyTurn(true);
+                }
+                logger.debug(Game.getCurrentPlayer().getToken() + " Opopnent token, and is my turn?" + Game.isIsMyTurn());
                 break;
             case SET_NAME:
                 message = cutCommand(message, commands);
-                if (message.equals("ok")) {
+                logger.info(message);
+                logger.debug("yay or nay" + message.startsWith("ok"));
+                if (message.startsWith("ok")) {
                     logger.debug("getLC is: " + getCurrentControler());
                     LoginController loginController = ((LoginController) getCurrentControler());
+                    Game.setCurrentPlayer(new Player(message.substring(2)));
                     logger.debug("getLC is: " + loginController);
                     loginController.loadUpGameLayout();
                 }else {
-                    getLc().errorLogin();
+                    LoginController loginController = ((LoginController) getCurrentControler());
+                    loginController.errorLogin();
+
                 }
                 break;
             case CHAT:
                 message = cutCommand(message, commands);
-                GameLayoutController gameLayoutController = ((GameLayoutController) getCurrentControler());
-                gameLayoutController.appendMessage(message);
+                glc = ((GameLayoutController) getCurrentControler());
+                glc.appendMessage(message);
                 break;
+            case MOVE:
+                message = cutCommand(message, commands);
+                glc = ((GameLayoutController) getCurrentControler());
+
+                if (message.charAt(1) == Game.getCurrentPlayer().getToken()){
+                    glc.dab(message.charAt(0),message.charAt(1));
+                    logger.debug("added to me " + message.charAt(0));
+                    Game.getMoveList().add(message.charAt(0));
+                    if (Game.whoWin(Game.getMoveList())){
+                        logger.debug("We  won, updating");
+                        Game.setWinnerList(Game.getWinnerList());
+                        glc.updateIWin();
+                    }
+                    Game.setIsMyTurn(false);
+                }else {
+                    glc.dab(message.charAt(0),message.charAt(1));
+                    Game.getOpponentMoveList().add(message.charAt(0));
+                    logger.debug("added to opponent " + message.charAt(0));
+                    if (Game.whoWin(Game.getOpponentMoveList())){
+                        logger.debug("Opponent won, updating");
+                        Game.setWinnerList(Game.getWinnerList());
+                        glc.updateOpponentWin();
+                    }
+                    Game.setIsMyTurn(true);
+                }
             default:
                 System.out.println("unknown command");
         }
@@ -90,29 +136,5 @@ public class CommandReceiver {
             commandReceiver = new CommandReceiver();
         }
         return commandReceiver;
-    }
-
-    public void setGlc(GameLayoutController glc) {
-        this.glc = glc;
-    }
-
-    public void setLc(LoginController lc) {
-        this.lc = lc;
-    }
-
-    public void setLfoc(LookingForOpponentController lfoc) {
-        this.lfoc = lfoc;
-    }
-
-    public GameLayoutController getGlc() {
-        return glc;
-    }
-
-    public LoginController getLc() {
-        return lc;
-    }
-
-    public LookingForOpponentController getLfoc() {
-        return lfoc;
     }
 }
