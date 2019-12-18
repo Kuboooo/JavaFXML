@@ -26,14 +26,14 @@ public class ServerListener implements Runnable {
             e.printStackTrace();
         }
         while (true) {
-                try {
-                    logger.info("Awaiting message");
-                    inputMessage = input.readLine();
-                    logger.info("Received a message from server " + inputMessage);
-                    commandReceiver.process(inputMessage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                logger.info("Awaiting message");
+                inputMessage = input.readLine();
+                logger.info("Received a message from server " + inputMessage);
+                commandReceiver.process(inputMessage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+    }
 }

@@ -9,65 +9,43 @@ public class Game {
 
     private int playerCount = 0;
 
-    public int getPlayerCount() {
-        return playerCount;
-    }
-
-    public Player getPlayerO() {
-        return playerO;
-    }
-
-    public void setPlayerO(Player playerO) {
-        this.playerO = playerO;
-        playerCount++;
-    }
-
-    public Player getPlayerX() {
-        return playerX;
-    }
-
-    public void setPlayerX(Player playerX) {
-        this.playerX = playerX;
-        playerCount++;
-    }
-
-    public Socket getOpponentSocket(Socket currentPlayersocket){
-        if (currentPlayersocket.equals(playerO.getSocket())){
+    public Socket getOpponentSocket(Socket currentPlayersocket) {
+        if (currentPlayersocket.equals(playerO.getSocket())) {
             return playerX.getSocket();
-        }else {
+        } else {
             return playerO.getSocket();
         }
     }
 
-    public Player getOpponent(Socket currentPlayersocket){
-        if (currentPlayersocket.equals(playerO.getSocket())){
+    public Player getOpponent(Socket currentPlayersocket) {
+        if (currentPlayersocket.equals(playerO.getSocket())) {
             return playerX;
-        }else {
+        } else {
             return playerO;
         }
     }
 
-    public void cancelPlayer(Player p){
-        if (p.equals(playerO)){
+    public void cancelPlayer(Player p) {
+        if (p.equals(playerO)) {
             playerO = null;
-        }else {
+        } else {
             playerX = null;
         }
         playerCount--;
     }
 
-    public void setPlayer(Player p){
-        if (playerX == null){
+    public void setPlayer(Player p) {
+        if (playerX == null) {
             playerX = p;
             playerX.setToken("X");
-        }else {
+        } else {
             playerO = p;
             playerO.setToken("O");
         }
         playerCount++;
     }
 
-    public boolean isFull(){
+    public boolean isFull() {
         return playerCount % 2 == 0;
     }
 }

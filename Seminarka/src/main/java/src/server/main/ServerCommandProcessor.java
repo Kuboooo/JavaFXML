@@ -2,7 +2,6 @@ package src.server.main;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import src.client.main.util.CommandReceiver;
 import src.client.main.util.Commands;
 
 import java.io.*;
@@ -18,11 +17,15 @@ public class ServerCommandProcessor {
     private Game game;
     private Player currentPlayer;
 
-    public ServerCommandProcessor(Socket currentPlayerSocket){
+    public ServerCommandProcessor(Socket currentPlayerSocket) {
         this.currentPlayerSocket = currentPlayerSocket;
     }
 
-    public void process(String input){
+    private static synchronized boolean validName(String s) {
+        return ServerRun.getConnectionList().stream().noneMatch(e -> e.equals(s));
+    }
+
+    public void process(String input) {
         PrintWriter outputCurrent = null;
         PrintWriter outputOpponent = null;
         try {
@@ -32,7 +35,7 @@ public class ServerCommandProcessor {
         }
         Commands commands = findCommand(input);
         String inputFromPlayer = cutCommand(input, commands);
-        switch (commands){
+        switch (commands) {
             case SET_NAME:
                 if (validName(inputFromPlayer)) {
                     String s = SET_NAME + "ok" + inputFromPlayer;
@@ -42,7 +45,7 @@ public class ServerCommandProcessor {
                     outputCurrent.println(SET_NAME + "ok" + inputFromPlayer);
                     logger.debug(outputCurrent + " output  current");
                     logger.info("returning " + s);
-                }else {
+                } else {
                     outputCurrent.println(SET_NAME + "Name already taken" + inputFromPlayer);
                 }
                 break;
@@ -76,20 +79,20 @@ public class ServerCommandProcessor {
                 outputCurrent.println(MOVE + inputFromPlayer + currentPlayer.getToken());
                 outputOpponent.println(MOVE + inputFromPlayer + currentPlayer.getToken());
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
     }
 
-    public void findOpponent(){
-        if (GameList.getGameList().isEmpty() || GameList.getGameList().get(GameList.getGameList().size()-1).isFull()){
+    public void findOpponent() {
+        if (GameList.getGameList().isEmpty() || GameList.getGameList().get(GameList.getGameList().size() - 1).isFull()) {
             logger.debug("Game initialized");
             game = new Game();
             game.setPlayer(currentPlayer);
             GameList.getGameList().add(game);
-        }else {
+        } else {
             logger.debug("Adding second player to game");
-            game = GameList.getGameList().get(GameList.getGameList().size()-1);
+            game = GameList.getGameList().get(GameList.getGameList().size() - 1);
             game.setPlayer(currentPlayer);
             PrintWriter outputCurrent = null;
             PrintWriter outputOpponent = null;
@@ -109,7 +112,7 @@ public class ServerCommandProcessor {
         }
     }
 
-    private Commands findCommand(String input){
+    private Commands findCommand(String input) {
         logger.info("Going through commands input: " + input);
         for (Commands s : Commands.values()) {
             logger.debug("Command: " + s.getCommand());
@@ -122,38 +125,18 @@ public class ServerCommandProcessor {
         return null;
     }
 
-    private String cutCommand(String combo, Commands commands){
+    private String cutCommand(String combo, Commands commands) {
 
         return combo.substring(commands.getCommand().length());
     }
 
-    private static synchronized boolean validName(String s) {
-        /*
-        for (Player p : ServerRun.getConnectionList()) {
-            if (p.getPlayerName() != null) {
-                logger.info("player name " + p.getPlayerName());
-            } else {
-                logger.info("player name null");
-            }
-        }
-        */
-        //logger.info(" " + ServerRun.getConnectionList().stream().filter(e -> e.getPlayerName() != null).noneMatch(e -> e.getPlayerName().equals(s)));
-
-        //logger.info(" this is in a collection " + ServerRun.getConnectionList().stream().filter(e -> e.getPlayerName() != null).noneMatch(e -> e.getPlayerName().equals(s)));
-        return ServerRun.getConnectionList().stream().noneMatch(e -> e.equals(s));
-    }
-
-    public static class StartingThread implements Runnable{
-
-        private Socket playerSocket;
-        private String token;
-        private String playerName;
-        private Game game;
+    public static class StartingThread implements Runnable {
 
         String inputFromPlayer;
+        private Socket playerSocket;
 
 
-        public StartingThread(Socket socket){
+        public StartingThread(Socket socket) {
             this.playerSocket = socket;
         }
 
@@ -173,11 +156,5 @@ public class ServerCommandProcessor {
                 e.printStackTrace();
             }
         }
-
-        public Socket getSocket() {
-            return playerSocket;
-        }
-
-
     }
 }

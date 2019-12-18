@@ -2,11 +2,11 @@ package src.client.game;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import src.client.main.controller.GameLayoutController;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public class Game {
 
@@ -15,20 +15,24 @@ public class Game {
     private static Player currentPlayer;
     private static Player opponentPlayer;
     private static Game game = null;
-    private static  boolean isMyTurn = false;
+    private static boolean isMyTurn = false;
     private static boolean iWin = false;
     private static boolean opponentWin = false;
     private static Collection<Character> moveList = new ArrayList<>();
     private static Collection<Character> winnerList = new ArrayList<>();
     private static Collection<Character> opponentMoveList = new ArrayList<>();
-    private static Collection<Character> row1 = new ArrayList<>(Arrays.asList ('1', '2', '3'));
-    private static Collection<Character> row2 = new ArrayList<>(Arrays.asList ('4', '5', '6'));
-    private static Collection<Character> row3 = new ArrayList<>(Arrays.asList ('7', '8', '9'));
-    private static Collection<Character> col1 = new ArrayList<>(Arrays.asList ('1', '4', '7'));
-    private static Collection<Character> col2 = new ArrayList<>(Arrays.asList ('2', '5', '8'));
-    private static Collection<Character> col3 = new ArrayList<>(Arrays.asList ('3', '6', '9'));
-    private static Collection<Character> dia1 = new ArrayList<>(Arrays.asList ('1', '5', '9'));
-    private static Collection<Character> dia2 = new ArrayList<>(Arrays.asList ('7', '5', '3'));
+    private static Collection<Character> row1 = new ArrayList<>(Arrays.asList('1', '2', '3'));
+    private static Collection<Character> row2 = new ArrayList<>(Arrays.asList('4', '5', '6'));
+    private static Collection<Character> row3 = new ArrayList<>(Arrays.asList('7', '8', '9'));
+    private static Collection<Character> col1 = new ArrayList<>(Arrays.asList('1', '4', '7'));
+    private static Collection<Character> col2 = new ArrayList<>(Arrays.asList('2', '5', '8'));
+    private static Collection<Character> col3 = new ArrayList<>(Arrays.asList('3', '6', '9'));
+    private static Collection<Character> dia1 = new ArrayList<>(Arrays.asList('1', '5', '9'));
+    private static Collection<Character> dia2 = new ArrayList<>(Arrays.asList('7', '5', '3'));
+
+    private Game() {
+
+    }
 
     public synchronized static Collection<Character> getWinnerList() {
         return winnerList;
@@ -54,7 +58,7 @@ public class Game {
         Game.opponentMoveList = opponentMoveList;
     }
 
-    public  synchronized static Collection<Character> getMoveList() {
+    public synchronized static Collection<Character> getMoveList() {
         return moveList;
     }
 
@@ -62,10 +66,10 @@ public class Game {
         Game.moveList = moveList;
     }
 
-    public synchronized static boolean whoWin(Collection<Character> currentOrOpponent){
+    public synchronized static boolean whoWin(Collection<Character> currentOrOpponent) {
 
-        List<Character>  helpRowList = new ArrayList<>(row1);
-        List<Character>  helpMoveList  = new ArrayList<>(currentOrOpponent);
+        List<Character> helpRowList = new ArrayList<>(row1);
+        List<Character> helpMoveList = new ArrayList<>(currentOrOpponent);
         logger.debug("help move list starting: " + helpMoveList);
 
 
@@ -74,7 +78,7 @@ public class Game {
 
         logger.debug("help move list first removal: " + helpRowList);
 
-        if (helpRowList.isEmpty()){
+        if (helpRowList.isEmpty()) {
             logger.debug("You win in a line 1");
             iWin = true;
             winnerList = row1;
@@ -84,7 +88,7 @@ public class Game {
         helpRowList.removeAll(helpMoveList);
 
         logger.debug("help move list second removal: " + helpRowList);
-        if (helpRowList.isEmpty()){
+        if (helpRowList.isEmpty()) {
             logger.debug("You win in a line 2");
             iWin = true;
 
@@ -95,7 +99,7 @@ public class Game {
 
         logger.debug("help move list third before removal: " + helpRowList);
         helpRowList.removeAll(helpMoveList);
-        if (helpRowList.isEmpty()){
+        if (helpRowList.isEmpty()) {
             logger.debug("You win in a line 3");
             iWin = true;
             winnerList = row3;
@@ -105,7 +109,7 @@ public class Game {
         helpRowList.removeAll(helpMoveList);
 
         logger.debug("help move list col1 removal: " + helpRowList);
-        if (helpRowList.isEmpty()){
+        if (helpRowList.isEmpty()) {
             logger.debug("You win in a column 1");
             iWin = true;
             winnerList = col1;
@@ -113,7 +117,7 @@ public class Game {
         }
         helpRowList = new ArrayList<>(col2);
         helpRowList.removeAll(helpMoveList);
-        if (helpRowList.isEmpty()){
+        if (helpRowList.isEmpty()) {
             logger.debug("You win in a col 2");
             iWin = true;
             winnerList = col2;
@@ -121,7 +125,7 @@ public class Game {
         }
         helpRowList = new ArrayList<>(col3);
         helpRowList.removeAll(helpMoveList);
-        if (helpRowList.isEmpty()){
+        if (helpRowList.isEmpty()) {
             logger.debug("You win in a col 3");
             iWin = true;
             winnerList = col3;
@@ -129,7 +133,7 @@ public class Game {
         }
         helpRowList = new ArrayList<>(dia1);
         helpRowList.removeAll(helpMoveList);
-        if (helpRowList.isEmpty()){
+        if (helpRowList.isEmpty()) {
             logger.debug("You win in a dia 1");
             iWin = true;
             winnerList = dia1;
@@ -137,7 +141,7 @@ public class Game {
         }
         helpRowList = new ArrayList<>(dia2);
         helpRowList.removeAll(helpMoveList);
-        if (helpRowList.isEmpty()){
+        if (helpRowList.isEmpty()) {
             logger.debug("You win in a dia 2");
             iWin = true;
             winnerList = dia2;
@@ -146,7 +150,6 @@ public class Game {
 
         return false;
     }
-
 
     public synchronized static boolean isiWin() {
         return iWin;
@@ -172,7 +175,6 @@ public class Game {
         Game.opponentPlayer = opponentPlayer;
     }
 
-
     public synchronized static boolean isIsMyTurn() {
         return isMyTurn;
     }
@@ -181,12 +183,8 @@ public class Game {
         Game.isMyTurn = isMyTurn;
     }
 
-    private Game(){
-
-    }
-
-    public synchronized static Game getInstance(){
-        if (game == null){
+    public synchronized static Game getInstance() {
+        if (game == null) {
             game = new Game();
         }
         return game;

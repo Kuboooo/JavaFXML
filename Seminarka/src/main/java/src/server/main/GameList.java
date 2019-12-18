@@ -5,8 +5,7 @@ import java.util.List;
 public class GameList {
 
 
-    public  static List<Game> gameList;
-    public static int gamesRunning;
+    public static List<Game> gameList;
 
     public synchronized static List<Game> getGameList() {
         return gameList;
