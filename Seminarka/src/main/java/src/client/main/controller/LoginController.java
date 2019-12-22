@@ -69,7 +69,7 @@ public class LoginController implements Initializable, ControllerInterface {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameLayout.fxml"));
 
                     Parent loaderParent = loader.load();
-                    CommandReceiver.setCurrentControler(loader.getController());
+                    CommandReceiver.getInstance().setCurrentControler(loader.getController());
                     Scene gameLayoutScene = new Scene(loaderParent);
 
                     Stage window = (Stage) loginButton.getScene().getWindow();

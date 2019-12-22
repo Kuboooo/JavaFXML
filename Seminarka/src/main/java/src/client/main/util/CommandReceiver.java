@@ -12,18 +12,17 @@ import src.client.main.controllerInterface.ControllerInterface;
 
 public class CommandReceiver {
     private static final Logger logger = LoggerFactory.getLogger(CommandReceiver.class);
-    public static CommandReceiver commandReceiver = null;
+    private static CommandReceiver commandReceiver = null;
     private static ControllerInterface currentControler;
-    private GameLayoutController glc;
 
     private CommandReceiver() {
     }
 
-    public static ControllerInterface getCurrentControler() {
+    private ControllerInterface getCurrentControler() {
         return currentControler;
     }
 
-    public static void setCurrentControler(ControllerInterface currentControler) {
+    public void setCurrentControler(ControllerInterface currentControler) {
         CommandReceiver.currentControler = currentControler;
     }
 
@@ -38,7 +37,7 @@ public class CommandReceiver {
 
         Commands commands = findCommand(message);
         logger.info("command received " + commands);
-
+        GameLayoutController glc;
         logger.info("cut message into " + message);
         switch (commands) {
             case CANCEL:

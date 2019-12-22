@@ -27,8 +27,7 @@ public class MainGraphic extends Application {
 
         ConnectClient.getInstance();
 
-        CommandReceiver.getInstance();
-        CommandReceiver.setCurrentControler(loader.getController());
+        CommandReceiver.getInstance().setCurrentControler(loader.getController());
 
         new Thread(new ServerListener()).start();
         Scene scene = new Scene(root);
