@@ -9,10 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-import static src.client.main.util.Commands.CANCEL;
-import static src.client.main.util.Commands.CHAT;
-import static src.client.main.util.Commands.FIND_OPPONENT;
-import static src.client.main.util.Commands.SET_NAME;
+import static src.client.main.util.Commands.*;
 
 
 public class CommanderSender {
@@ -21,10 +18,11 @@ public class CommanderSender {
     private static PrintWriter output;
     private static CommanderSender commanderSender = null;
 
-    private CommanderSender(){}
+    private CommanderSender() {
+    }
 
-    public static CommanderSender getInstance(){
-        if (commanderSender == null){
+    public static CommanderSender getInstance() {
+        if (commanderSender == null) {
             commanderSender = new CommanderSender();
             try {
                 output = new PrintWriter(new OutputStreamWriter(ConnectClient.getInstance().getPlayerSocket().getOutputStream(), StandardCharsets.UTF_8), true);
@@ -64,7 +62,5 @@ public class CommanderSender {
         logger.info("got command here: " + command);
         logger.info("also got message: " + value);
         output.println(command + "" + value);
-
-
     }
 }

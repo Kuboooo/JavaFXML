@@ -3,19 +3,15 @@ package src.server.main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import static src.client.main.util.Commands.SET_NAME;
 
 public class ServerRun {
 
     private static final Logger logger = LoggerFactory.getLogger(ServerRun.class);
-    private static  List<String> connectionList;
+    private static List<String> connectionList;
 
 
     public static void main(String[] args) {
@@ -29,11 +25,11 @@ public class ServerRun {
 
         try {
             ServerSocket serverSocket = new ServerSocket(8000);
-                while (true) {
-                    startingThread = new ServerCommandProcessor.StartingThread(serverSocket.accept());
-                    thread = new Thread(startingThread);
-                    thread.start();
-                }
+            while (true) {
+                startingThread = new ServerCommandProcessor.StartingThread(serverSocket.accept());
+                thread = new Thread(startingThread);
+                thread.start();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,7 +39,4 @@ public class ServerRun {
         return connectionList;
     }
 
-    //public static void setConnectionList(List<Player> connectionList) {
-        //ServerRun.connectionList = connectionList;
-    //}
 }

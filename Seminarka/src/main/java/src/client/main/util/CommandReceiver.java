@@ -1,53 +1,46 @@
 package src.client.main.util;
 
 
-import javafx.application.Platform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import src.client.game.Game;
 import src.client.game.Player;
 import src.client.main.controller.GameLayoutController;
 import src.client.main.controller.LoginController;
-import src.client.main.controller.LookingForOpponentController;
 import src.client.main.controllerInterface.ControllerInterface;
-
-import java.io.IOException;
 
 
 public class CommandReceiver {
     private static final Logger logger = LoggerFactory.getLogger(CommandReceiver.class);
-
+    private static CommandReceiver commandReceiver = null;
     private static ControllerInterface currentControler;
 
-    public static ControllerInterface getCurrentControler() {
+    private CommandReceiver() {
+    }
+
+    private ControllerInterface getCurrentControler() {
         return currentControler;
     }
 
-    public static void setCurrentControler(ControllerInterface currentControler) {
+    public void setCurrentControler(ControllerInterface currentControler) {
         CommandReceiver.currentControler = currentControler;
     }
 
-    private CommandReceiver (){}
+    public static CommandReceiver getInstance() {
+        if (commandReceiver == null) {
+            commandReceiver = new CommandReceiver();
+        }
+        return commandReceiver;
+    }
 
-    public static CommandReceiver commandReceiver = null;
-    private GameLayoutController glc;
-    private LoginController lc;
-    private LookingForOpponentController lfoc;
-    private Game game;
-
-    public void process(String message){
+    public void process(String message) {
 
         Commands commands = findCommand(message);
         logger.info("command received " + commands);
-
+        GameLayoutController glc;
         logger.info("cut message into " + message);
-        switch (commands){
+        switch (commands) {
             case CANCEL:
-                logger.debug("glc is: " + getCurrentControler());
-                glc = ((GameLayoutController) getCurrentControler());
-                logger.debug("gmlc is: " + glc);
-
-                //glc.setUpForPlay();
                 break;
             case FIND_OPPONENT:
                 message = cutCommand(message, commands);
@@ -57,7 +50,7 @@ public class CommandReceiver {
                 glc.setUpForPlay();
                 logger.debug("gmlc is: " + glc);
                 Game.getCurrentPlayer().setToken(message.charAt(0));
-                if (Game.getCurrentPlayer().getToken() == 'X'){
+                if (Game.getCurrentPlayer().getToken() == 'X') {
                     Game.setIsMyTurn(true);
                 }
                 logger.debug(Game.getCurrentPlayer().getToken() + " Opopnent token, and is my turn?" + Game.isIsMyTurn());
@@ -67,12 +60,11 @@ public class CommandReceiver {
                 logger.info(message);
                 logger.debug("yay or nay" + message.startsWith("ok"));
                 if (message.startsWith("ok")) {
-                    logger.debug("getLC is: " + getCurrentControler());
                     LoginController loginController = ((LoginController) getCurrentControler());
                     Game.setCurrentPlayer(new Player(message.substring(2)));
                     logger.debug("getLC is: " + loginController);
                     loginController.loadUpGameLayout();
-                }else {
+                } else {
                     LoginController loginController = ((LoginController) getCurrentControler());
                     loginController.errorLogin();
 
@@ -87,21 +79,21 @@ public class CommandReceiver {
                 message = cutCommand(message, commands);
                 glc = ((GameLayoutController) getCurrentControler());
 
-                if (message.charAt(1) == Game.getCurrentPlayer().getToken()){
-                    glc.dab(message.charAt(0),message.charAt(1));
+                if (message.charAt(1) == Game.getCurrentPlayer().getToken()) {
+                    glc.dab(message.charAt(0), message.charAt(1));
                     logger.debug("added to me " + message.charAt(0));
                     Game.getMoveList().add(message.charAt(0));
-                    if (Game.whoWin(Game.getMoveList())){
+                    if (Game.whoWin(Game.getMoveList())) {
                         logger.debug("We  won, updating");
                         Game.setWinnerList(Game.getWinnerList());
                         glc.updateIWin();
                     }
                     Game.setIsMyTurn(false);
-                }else {
-                    glc.dab(message.charAt(0),message.charAt(1));
+                } else {
+                    glc.dab(message.charAt(0), message.charAt(1));
                     Game.getOpponentMoveList().add(message.charAt(0));
                     logger.debug("added to opponent " + message.charAt(0));
-                    if (Game.whoWin(Game.getOpponentMoveList())){
+                    if (Game.whoWin(Game.getOpponentMoveList())) {
                         logger.debug("Opponent won, updating");
                         Game.setWinnerList(Game.getWinnerList());
                         glc.updateOpponentWin();
@@ -113,28 +105,21 @@ public class CommandReceiver {
         }
     }
 
-    private Commands findCommand(String input){
+    private Commands findCommand(String input) {
         logger.info("Going through commands input: " + input);
-            for (Commands s : Commands.values()) {
-                logger.debug("Command: " + s.getCommand());
-                if (input.toLowerCase().startsWith(s.getCommand())) {
-                    logger.debug("Found Command that fits: lower" + s);
-                    return s;
-                }
+        for (Commands s : Commands.values()) {
+            logger.debug("Command: " + s.getCommand());
+            if (input.toLowerCase().startsWith(s.getCommand())) {
+                logger.debug("Found Command that fits: lower" + s);
+                return s;
             }
-            logger.debug("No commands, throwing null");
-            return null;
+        }
+        logger.debug("No commands, throwing null");
+        return null;
     }
 
-    private String cutCommand(String combo, Commands commands){
+    private String cutCommand(String combo, Commands commands) {
 
         return combo.substring(commands.getCommand().length());
-    }
-
-    public static CommandReceiver getInstance(){
-        if (commandReceiver == null) {
-            commandReceiver = new CommandReceiver();
-        }
-        return commandReceiver;
     }
 }
