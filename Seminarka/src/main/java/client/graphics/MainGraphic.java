@@ -5,9 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import client.main.ConnectClient;
-import client.main.ServerListener;
-import client.main.util.CommandReceiver;
+import client.util.ConnectClient;
+import client.util.ServerListener;
+import client.util.CommandReceiver;
 
 import java.io.IOException;
 

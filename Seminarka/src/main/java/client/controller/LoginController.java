@@ -1,4 +1,4 @@
-package client.main.controller;
+package client.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -13,10 +13,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import client.main.controllerInterface.ControllerInterface;
-import client.main.util.CommandReceiver;
-import client.main.util.CommanderSender;
-import client.main.util.Commands;
+import client.controllerInterface.ControllerInterface;
+import client.util.CommandReceiver;
+import client.util.CommanderSender;
+import client.util.Commands;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,13 +51,10 @@ public class LoginController implements Initializable, ControllerInterface {
     }
 
     public void errorLogin() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                errorLabel.setVisible(true);
-                errorLabel.setTextFill(Color.web("#f56c42"));
-                errorLabel.setText("Username taken");
-            }
+        Platform.runLater(() -> {
+            errorLabel.setVisible(true);
+            errorLabel.setTextFill(Color.web("#f56c42"));
+            errorLabel.setText("Username taken");
         });
     }
 

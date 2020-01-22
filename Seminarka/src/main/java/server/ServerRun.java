@@ -1,5 +1,8 @@
-package main;
+package server;
 
+import server.game.Game;
+import server.game.GameList;
+import server.util.ServerCommandProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +18,7 @@ public class ServerRun {
 
 
     public static void main(String[] args) {
-        logger.info("runnin main");
+        logger.info("runnin server");
 
         ServerCommandProcessor.StartingThread startingThread;
         Thread thread;

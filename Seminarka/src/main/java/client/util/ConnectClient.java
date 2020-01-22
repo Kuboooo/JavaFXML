@@ -1,4 +1,4 @@
-package client.main;
+package client.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,7 @@ public class ConnectClient {
         return connectClient;
     }
 
-    public Socket getPlayerSocket() {
+    Socket getPlayerSocket() {
         return playerSocket;
     }
 }

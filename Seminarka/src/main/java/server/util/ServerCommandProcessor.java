@@ -1,14 +1,18 @@
-package main;
+package server.util;
 
+import server.ServerRun;
+import server.game.Game;
+import server.game.GameList;
+import server.game.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import client.main.util.Commands;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-import static client.main.util.Commands.*;
+import static server.util.Commands.*;
+
 
 public class ServerCommandProcessor {
 
@@ -17,7 +21,7 @@ public class ServerCommandProcessor {
     private Game game;
     private Player currentPlayer;
 
-    public ServerCommandProcessor(Socket currentPlayerSocket) {
+    private ServerCommandProcessor(Socket currentPlayerSocket) {
         this.currentPlayerSocket = currentPlayerSocket;
     }
 
@@ -25,7 +29,7 @@ public class ServerCommandProcessor {
         return ServerRun.getConnectionList().stream().noneMatch(e -> e.equals(s));
     }
 
-    public void process(String input) {
+    private void process(String input) {
         PrintWriter outputCurrent = null;
         PrintWriter outputOpponent = null;
         try {
@@ -84,7 +88,7 @@ public class ServerCommandProcessor {
         }
     }
 
-    public void findOpponent() {
+    private void findOpponent() {
         if (GameList.getGameList().isEmpty() || GameList.getGameList().get(GameList.getGameList().size() - 1).isFull()) {
             logger.debug("Game initialized");
             game = new Game();
@@ -105,10 +109,10 @@ public class ServerCommandProcessor {
 
             logger.debug("Updating first player");
             logger.debug("Sending message: " + FIND_OPPONENT + currentPlayer.getToken());
-            outputCurrent.println(FIND_OPPONENT + currentPlayer.getToken());
+            outputCurrent.println(FIND_OPPONENT + currentPlayer.getToken() + game.getOpponent(currentPlayerSocket).getPlayerName());
 
             logger.debug("Updating second player");
-            outputOpponent.println(FIND_OPPONENT + game.getOpponent(currentPlayerSocket).getToken());
+            outputOpponent.println(FIND_OPPONENT + game.getOpponent(currentPlayerSocket).getToken() + currentPlayer.getPlayerName());
         }
     }
 
@@ -142,7 +146,7 @@ public class ServerCommandProcessor {
 
         @Override
         public void run() {
-            BufferedReader input = null;
+            BufferedReader input;
             ServerCommandProcessor serverCommandProcessor = new ServerCommandProcessor(playerSocket);
             try {
                 input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream(), StandardCharsets.UTF_8));

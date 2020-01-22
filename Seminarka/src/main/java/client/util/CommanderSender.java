@@ -1,15 +1,15 @@
-package client.main.util;
+package client.util;
 
+import client.game.Game;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import client.main.ConnectClient;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-import static client.main.util.Commands.*;
+import static client.util.Commands.*;
 
 
 public class CommanderSender {
@@ -44,7 +44,7 @@ public class CommanderSender {
                 output.println(FIND_OPPONENT);
                 break;
             case CHAT:
-                output.println(CHAT + value);
+                output.println(CHAT + String.valueOf(Game.getCurrentPlayer().getToken()) + value);
                 break;
             case SET_NAME:
                 output.println(SET_NAME + value);

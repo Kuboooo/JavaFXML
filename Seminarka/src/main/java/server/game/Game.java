@@ -1,4 +1,4 @@
-package main;
+package server.game;
 
 import java.net.Socket;
 
@@ -9,16 +9,16 @@ public class Game {
 
     private int playerCount = 0;
 
-    public Socket getOpponentSocket(Socket currentPlayersocket) {
-        if (currentPlayersocket.equals(playerO.getSocket())) {
+    public Socket getOpponentSocket(Socket currentPlayerSocket) {
+        if (currentPlayerSocket.equals(playerO.getSocket())) {
             return playerX.getSocket();
         } else {
             return playerO.getSocket();
         }
     }
 
-    public Player getOpponent(Socket currentPlayersocket) {
-        if (currentPlayersocket.equals(playerO.getSocket())) {
+    public Player getOpponent(Socket currentPlayerSocket) {
+        if (currentPlayerSocket.equals(playerO.getSocket())) {
             return playerX;
         } else {
             return playerO;
