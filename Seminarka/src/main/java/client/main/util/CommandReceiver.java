@@ -1,13 +1,13 @@
-package src.client.main.util;
+package client.main.util;
 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import src.client.game.Game;
-import src.client.game.Player;
-import src.client.main.controller.GameLayoutController;
-import src.client.main.controller.LoginController;
-import src.client.main.controllerInterface.ControllerInterface;
+import client.game.Game;
+import client.game.Player;
+import client.main.controller.GameLayoutController;
+import client.main.controller.LoginController;
+import client.main.controllerInterface.ControllerInterface;
 
 
 public class CommandReceiver {

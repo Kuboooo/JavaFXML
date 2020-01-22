@@ -1,13 +1,13 @@
-package src.client.graphics;
+package client.graphics;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import src.client.main.ConnectClient;
-import src.client.main.ServerListener;
-import src.client.main.util.CommandReceiver;
+import client.main.ConnectClient;
+import client.main.ServerListener;
+import client.main.util.CommandReceiver;
 
 import java.io.IOException;
 

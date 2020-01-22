@@ -1,4 +1,4 @@
-package src.client.game;
+package client.game;
 
 public class Player {
 

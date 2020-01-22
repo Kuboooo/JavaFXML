@@ -1,4 +1,4 @@
-package src.client.main;
+package client.main;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

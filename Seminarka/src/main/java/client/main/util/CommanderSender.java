@@ -1,15 +1,15 @@
-package src.client.main.util;
+package client.main.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import src.client.main.ConnectClient;
+import client.main.ConnectClient;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-import static src.client.main.util.Commands.*;
+import static client.main.util.Commands.*;
 
 
 public class CommanderSender {

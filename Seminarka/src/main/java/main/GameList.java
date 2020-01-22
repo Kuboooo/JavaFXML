@@ -1,4 +1,4 @@
-package src.server.main;
+package main;
 
 import java.util.List;
 

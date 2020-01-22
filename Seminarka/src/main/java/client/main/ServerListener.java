@@ -1,8 +1,8 @@
-package src.client.main;
+package client.main;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import src.client.main.util.CommandReceiver;
+import client.main.util.CommandReceiver;
 
 import java.io.BufferedReader;
 import java.io.IOException;

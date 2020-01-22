@@ -1,4 +1,4 @@
-package src.client.main.controller;
+package client.main.controller;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -12,10 +12,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import src.client.game.Game;
-import src.client.main.controllerInterface.ControllerInterface;
-import src.client.main.util.CommanderSender;
-import src.client.main.util.Commands;
+import client.game.Game;
+import client.main.controllerInterface.ControllerInterface;
+import client.main.util.CommanderSender;
+import client.main.util.Commands;
 
 import java.net.URL;
 import java.util.ArrayList;

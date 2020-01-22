@@ -1,4 +1,4 @@
-package src.client.main.controller;
+package client.main.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -13,10 +13,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import src.client.main.controllerInterface.ControllerInterface;
-import src.client.main.util.CommandReceiver;
-import src.client.main.util.CommanderSender;
-import src.client.main.util.Commands;
+import client.main.controllerInterface.ControllerInterface;
+import client.main.util.CommandReceiver;
+import client.main.util.CommanderSender;
+import client.main.util.Commands;
 
 import java.io.IOException;
 import java.net.URL;

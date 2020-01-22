@@ -1,14 +1,14 @@
-package src.server.main;
+package main;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import src.client.main.util.Commands;
+import client.main.util.Commands;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
-import static src.client.main.util.Commands.*;
+import static client.main.util.Commands.*;
 
 public class ServerCommandProcessor {
 
