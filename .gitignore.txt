@@ -1,0 +1,3 @@
+.idea/
+Seminarka/.idea/
+Seminarka/target/
