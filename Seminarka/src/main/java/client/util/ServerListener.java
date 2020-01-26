@@ -1,8 +1,7 @@
-package client.main;
+package client.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import client.main.util.CommandReceiver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +13,6 @@ public class ServerListener implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(ServerListener.class);
 
     private BufferedReader input;
-    private String inputMessage = "";
 
     @Override
     public void run() {
@@ -25,7 +23,8 @@ public class ServerListener implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while (true) {
+        String inputMessage;
+        while (!ConnectClient.getInstance().getPlayerSocket().isClosed()) {
             try {
                 logger.info("Awaiting message");
                 inputMessage = input.readLine();

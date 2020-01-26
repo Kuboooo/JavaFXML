@@ -1,4 +1,4 @@
-package client.main.controllerInterface;
+package client.controllerInterface;
 
 public interface ControllerInterface {
 }

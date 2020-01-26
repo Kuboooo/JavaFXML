@@ -1,4 +1,4 @@
-package main;
+package server.game;
 
 import java.net.Socket;
 
@@ -24,11 +24,11 @@ public class Player {
         return token;
     }
 
-    public void setToken(String token) {
+    void setToken(String token) {
         this.token = token;
     }
 
-    public Socket getSocket() {
+    Socket getSocket() {
         return socket;
     }
 

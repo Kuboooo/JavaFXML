@@ -1,4 +1,4 @@
-package client.main.util;
+package client.util;
 
 public enum Commands {
 

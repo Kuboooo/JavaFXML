@@ -1,6 +1,7 @@
-package client.main.controller;
+package client.controller;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,15 +9,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import client.main.controllerInterface.ControllerInterface;
-import client.main.util.CommandReceiver;
-import client.main.util.CommanderSender;
-import client.main.util.Commands;
+import client.controllerInterface.ControllerInterface;
+import client.util.CommandReceiver;
+import client.util.CommanderSender;
+import client.util.Commands;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,13 +55,10 @@ public class LoginController implements Initializable, ControllerInterface {
     }
 
     public void errorLogin() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                errorLabel.setVisible(true);
-                errorLabel.setTextFill(Color.web("#f56c42"));
-                errorLabel.setText("Username taken");
-            }
+        Platform.runLater(() -> {
+            errorLabel.setVisible(true);
+            errorLabel.setTextFill(Color.web("#f56c42"));
+            errorLabel.setText("Username taken");
         });
     }
 
@@ -73,6 +74,10 @@ public class LoginController implements Initializable, ControllerInterface {
                     Scene gameLayoutScene = new Scene(loaderParent);
 
                     Stage window = (Stage) loginButton.getScene().getWindow();
+                    window.setOnCloseRequest(event -> {
+                        logger.info("Stage is closing");
+                        CommanderSender.getInstance().process(Commands.QUIT, "main");
+                    });
                     window.setScene(gameLayoutScene);
                     window.show();
                 } catch (IOException e) {
