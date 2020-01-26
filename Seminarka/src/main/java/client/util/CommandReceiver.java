@@ -9,6 +9,8 @@ import client.controller.GameLayoutController;
 import client.controller.LoginController;
 import client.controllerInterface.ControllerInterface;
 
+import java.io.IOException;
+
 
 public class CommandReceiver {
     private static final Logger logger = LoggerFactory.getLogger(CommandReceiver.class);
@@ -74,6 +76,13 @@ public class CommandReceiver {
                         getGameLayoutController().updateOpponentWin();
                     }
                     Game.setIsMyTurn(true);
+                }
+            case QUIT:
+                logger.debug("Stage closed");
+                try {
+                    ConnectClient.getInstance().getPlayerSocket().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             default:
                logger.error("unknown command");

@@ -1,6 +1,7 @@
 package client.controller;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -8,8 +9,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +74,10 @@ public class LoginController implements Initializable, ControllerInterface {
                     Scene gameLayoutScene = new Scene(loaderParent);
 
                     Stage window = (Stage) loginButton.getScene().getWindow();
+                    window.setOnCloseRequest(event -> {
+                        logger.info("Stage is closing");
+                        CommanderSender.getInstance().process(Commands.QUIT, "main");
+                    });
                     window.setScene(gameLayoutScene);
                     window.show();
                 } catch (IOException e) {

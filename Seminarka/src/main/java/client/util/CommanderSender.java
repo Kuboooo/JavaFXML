@@ -53,8 +53,11 @@ public class CommanderSender {
             case CANCEL:
                 output.println(CANCEL);
                 break;
+            case QUIT:
+                logger.debug("Leaving, sending quit command to server");
+                output.println(QUIT + value);
             default:
-                System.out.println("unknown command");
+                logger.debug("unknown command");
         }
     }
 

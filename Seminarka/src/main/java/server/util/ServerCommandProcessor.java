@@ -69,6 +69,13 @@ public class ServerCommandProcessor {
             case LOGIN:
                 break;
             case QUIT:
+                try {
+                    outputCurrent.println(QUIT);
+                    logger.debug("Player left, closing connection");
+                    currentPlayerSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             case MOVE:
                 try {
@@ -151,7 +158,7 @@ public class ServerCommandProcessor {
             try {
                 input = new BufferedReader(new InputStreamReader(playerSocket.getInputStream(), StandardCharsets.UTF_8));
 
-                while (true) {
+                while (!playerSocket.isClosed()) {
                     logger.debug("Awaiting new message");
                     inputFromPlayer = input.readLine();
                     serverCommandProcessor.process(inputFromPlayer);

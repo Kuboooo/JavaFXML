@@ -24,7 +24,7 @@ public class ServerListener implements Runnable {
             e.printStackTrace();
         }
         String inputMessage;
-        while (true) {
+        while (!ConnectClient.getInstance().getPlayerSocket().isClosed()) {
             try {
                 logger.info("Awaiting message");
                 inputMessage = input.readLine();
