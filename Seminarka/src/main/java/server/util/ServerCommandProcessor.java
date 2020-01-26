@@ -69,13 +69,6 @@ public class ServerCommandProcessor {
             case LOGIN:
                 break;
             case QUIT:
-                try {
-                    outputCurrent.println(QUIT);
-                    logger.debug("Player left, closing connection");
-                    currentPlayerSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 break;
             case MOVE:
                 try {
