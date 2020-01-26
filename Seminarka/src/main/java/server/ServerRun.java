@@ -18,8 +18,8 @@ public class ServerRun {
 
 
     public static void main(String[] args) {
-        logger.info("runnin server");
 
+        logger.info("runnin' server");
         ServerCommandProcessor.StartingThread startingThread;
         Thread thread;
         connectionList = new ArrayList<>();
@@ -30,6 +30,7 @@ public class ServerRun {
             ServerSocket serverSocket = new ServerSocket(8000);
             while (true) {
                 startingThread = new ServerCommandProcessor.StartingThread(serverSocket.accept());
+                logger.info("first round");
                 thread = new Thread(startingThread);
                 thread.start();
             }

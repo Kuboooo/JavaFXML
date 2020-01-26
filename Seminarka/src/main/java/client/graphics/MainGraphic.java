@@ -16,7 +16,6 @@ public class MainGraphic extends Application {
 
     public static void main(String[] args) {
         launch(args);
-
     }
 
     @Override
@@ -30,6 +29,7 @@ public class MainGraphic extends Application {
         CommandReceiver.getInstance().setCurrentControler(loader.getController());
 
         new Thread(new ServerListener()).start();
+
         Scene scene = new Scene(root);
 
         primaryStage.setScene(scene);

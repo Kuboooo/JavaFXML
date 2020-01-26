@@ -25,10 +25,6 @@ public class ServerCommandProcessor {
         this.currentPlayerSocket = currentPlayerSocket;
     }
 
-    private static synchronized boolean validName(String s) {
-        return ServerRun.getConnectionList().stream().noneMatch(e -> e.equals(s));
-    }
-
     private void process(String input) {
         PrintWriter outputCurrent = null;
         PrintWriter outputOpponent = null;
@@ -37,9 +33,10 @@ public class ServerCommandProcessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Commands commands = findCommand(input);
-        String inputFromPlayer = cutCommand(input, commands);
-        switch (commands) {
+        Commands command = findCommand(input);
+        String inputFromPlayer = cutCommand(input, command);
+
+        switch (command) {
             case SET_NAME:
                 if (validName(inputFromPlayer)) {
                     String s = SET_NAME + "ok" + inputFromPlayer;
@@ -72,7 +69,6 @@ public class ServerCommandProcessor {
             case LOGIN:
                 break;
             case QUIT:
-
                 break;
             case MOVE:
                 try {
@@ -86,6 +82,10 @@ public class ServerCommandProcessor {
             default:
                 break;
         }
+    }
+
+    private static synchronized boolean validName(String s) {
+        return ServerRun.getConnectionList().stream().noneMatch(e -> e.equals(s));
     }
 
     private void findOpponent() {
@@ -118,11 +118,11 @@ public class ServerCommandProcessor {
 
     private Commands findCommand(String input) {
         logger.info("Going through commands input: " + input);
-        for (Commands s : Commands.values()) {
-            logger.debug("Command: " + s.getCommand());
-            if (input.toLowerCase().startsWith(s.getCommand())) {
-                logger.debug(String.format("Found Command that fits: %s", s));
-                return s;
+        for (Commands command : Commands.values()) {
+            logger.debug("Command: " + command.getCommand());
+            if (input.toLowerCase().startsWith(command.getCommand())) {
+                logger.debug(String.format("Found Command that fits: %s", command));
+                return command;
             }
         }
         logger.debug("No commands, throwing null");
